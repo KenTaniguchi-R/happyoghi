@@ -7,6 +7,7 @@ from customer.models import Customer
 from foods_container.forms import ContainerForm
 
 from foods_container.models import Container
+import requests
 
 # Create your views here.
 
@@ -34,6 +35,10 @@ class ContainerDetail(LoginRequiredMixin, DetailView):
         container = self.container
 
         # TODO: API stuff
+        res = requests.get("https://api.nal.usda.gov/fdc/v1/foods/search?api_key=DEMO_KEY&query=Cheddar%20Cheese").json()
+        html = "{}".format(res["foods"][0]["foodNutrients"])
+
+        context["nutrition"] = res["foods"][0]["foodNutrients"]
 
         context["name"] = "data here"
 
@@ -51,6 +56,6 @@ class CreateContainer(LoginRequiredMixin, FormView):
         Container.objects.create(
             user_id = Customer.objects.get(id=self.request.user.id),
             name = data["name"],
-            foods = {data["food_name"]: data["count"]}
+            foods = {"foods": [{"name":data["food_name"], "count": data["count"]}]}
         )
         return super().form_valid(form)
