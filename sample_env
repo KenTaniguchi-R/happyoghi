@@ -1,0 +1,6 @@
+# database setting
+Host=<database host name>
+Database=<database name>
+User=<database user name>
+Port=<database port nubmer>
+Password=<database password>
