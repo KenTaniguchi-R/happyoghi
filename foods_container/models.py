@@ -12,3 +12,5 @@ class Container(models.Model):
     user_id = models.ForeignKey(Customer, on_delete=models.CASCADE)
     name = models.CharField(verbose_name="container name", max_length=50)
     foods = models.JSONField(verbose_name="foods and counter")
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)

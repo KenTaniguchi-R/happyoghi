@@ -1,0 +1,17 @@
+<h1>Create new container</h1>
+
+<form action="" method="POST">
+    {% csrf_token %}
+
+    {{form.name.label}}
+    {{form.name}}
+
+    {{form.food_name.label}}
+    {{form.food_name}}
+
+    {{form.count.label}}
+    {{form.count}}
+
+    <button type="submit">Register</button>
+</form>
+

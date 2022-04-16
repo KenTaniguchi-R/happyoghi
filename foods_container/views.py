@@ -1,7 +1,10 @@
-from django.views.generic.base import TemplateView
+from django.urls import reverse_lazy
+from django.views.generic.edit import FormView
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
 from django.contrib.auth.mixins import LoginRequiredMixin
+from customer.models import Customer
+from foods_container.forms import ContainerForm
 
 from foods_container.models import Container
 
@@ -24,3 +27,19 @@ class ContainerDetail(LoginRequiredMixin, DetailView):
 
     def get_object(self, queryset=None):
         return Container.objects.get(id=self.kwargs.get("id"))
+
+
+class CreateContainer(LoginRequiredMixin, FormView):
+    template_name = "containers/create.html"
+    form_class = ContainerForm
+    success_url = reverse_lazy('home')
+
+    def form_valid(self, form):
+        data = form.data
+
+        Container.objects.create(
+            user_id = Customer.objects.get(id=self.request.user.id),
+            name = data["name"],
+            foods = {data["food_name"]: data["count"]}
+        )
+        return super().form_valid(form)
