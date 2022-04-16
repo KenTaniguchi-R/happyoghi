@@ -1,0 +1,16 @@
+<form method="POST" action="">
+    {% csrf_token %}
+    <label>User Id</label>
+    {{ form.username }}
+    {{ form.username.errors }}
+    <label>Password</label>
+    {{ form.password1 }}
+    {{ form.password1.errors }}
+    <label>Password(Again)</label>
+    {{ form.password2 }}
+    {{ form.password2.errors }}
+    <button type = "submit">Register</button>
+  </form>
+
+<p>do you already have an account?</p>
+<a href="{% url 'login' %}">Login</a>
