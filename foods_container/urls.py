@@ -4,5 +4,6 @@ from django.urls import path
 from .views import *
 
 urlpatterns = [
-    path("home/", Home.as_view(), name="home")
+    path("home/", Home.as_view(), name="home"),
+    path("detail/<uuid:id>", ContainerDetail.as_view(), name="detail"),
 ]
