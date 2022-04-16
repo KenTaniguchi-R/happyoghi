@@ -26,7 +26,18 @@ class ContainerDetail(LoginRequiredMixin, DetailView):
     template_name = "containers/detail.html"
 
     def get_object(self, queryset=None):
-        return Container.objects.get(id=self.kwargs.get("id"))
+        self.container = Container.objects.get(id=self.kwargs.get("id"))
+        return self.container
+
+    def get_context_data(self, **kwargs):
+        context =  super().get_context_data(**kwargs)
+        container = self.container
+
+        # TODO: API stuff
+
+        context["name"] = "data here"
+
+        return context
 
 
 class CreateContainer(LoginRequiredMixin, FormView):
