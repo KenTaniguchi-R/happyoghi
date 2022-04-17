@@ -1,21 +1,42 @@
 <a href="{% url 'home' %}"><button>Back to home</button></a>
-<h1>Edit container: {{ container.name }} </h1>
+<h1>Edit container: {{ container_name }} </h1>
 
 <form action="" method="POST">
-    {% csrf_token %}
+    <div id="innerForm">
+        {% csrf_token %}
 
-    {{form.name.label}}
-    {{form.name}}
+        {{form.name.label}}
+        {{form.name}}
 
-    {{form.memo.label}}
-    {{form.memo}}
+        {{form.memo.label}}
+        {{form.memo}}
 
-    {{form.food_name.label}}
-    {{form.food_name}}
+        {% for name, count in foods.items %}
 
-    {{form.count.label}}
-    {{form.count}}
+        <div>
+            <label>food:<input name="food_{{forloop.counter0}}" type="text" value="{{name}}"/></label>
+
+            <label>count:<input name="count_{{forloop.counter0}}" type="number" value="{{count}}"/></label>
+        </div>
+
+        {% endfor %}
+    </div>
 
     <button type="submit">Confirm</button>
 </form>
 
+<button id="addMoreItem" type="button" >Add Field</button>
+
+<script>
+    let formNum = {{foods|length}};
+    let addItem = document.getElementById("addMoreItem");
+    addItem.addEventListener("click", () => {
+        let innerForm = document.getElementById("innerForm");
+        let str = `<div>
+        <label>food_${formNum}:<input name="food_${formNum}" type="text"/></label>
+        <label>count_${formNum}:<input name="count_${formNum}" type="number" /></label></div>
+        `
+        innerForm.insertAdjacentHTML('beforeend', str);
+        formNum += 1;
+    })
+</script>

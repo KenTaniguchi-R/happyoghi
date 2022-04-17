@@ -74,8 +74,11 @@ class CreateContainer(LoginRequiredMixin, FormView):
         for index, food_item in enumerate(foods["foods"]):
             food_name = food_item["name"]
             res = requests.get("https://api.nal.usda.gov/fdc/v1/foods/search?api_key=DEMO_KEY&query={}".format(food_name)).json()
-            res["foods"] = res["foods"][0] 
-            foods["foods"][index]["nutritions"] = res
+            if res["totalHits"]:
+                res["foods"] = res["foods"][0]
+                foods["foods"][index]["nutritions"] = res
+            else:
+                foods["foods"][index]["nutritions"] = {}
 
         #TODO: make foods list to json and
         newContainer = Container.objects.create(
@@ -90,6 +93,7 @@ class CreateContainer(LoginRequiredMixin, FormView):
 class EditContainer(LoginRequiredMixin, FormView):
     template_name = "containers/edit.html"
     form_class = ContainerForm
+    foods = {}
 
     def get_success_url(self):
         return reverse_lazy('detail', kwargs={'id': self.containerUUID})
@@ -99,15 +103,15 @@ class EditContainer(LoginRequiredMixin, FormView):
         self.container = Container.objects.get(id=self.kwargs.get("id"))
 
         initial["name"] = self.container.name
-        foodnames = list(self.container.foods.keys())
-        counter = list(self.container.foods.values())
-        initial["food_name"] = foodnames[0]
-        initial["count"] = counter[0]
+        initial["memo"] = self.container.memo
         return initial
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["container"] = self.container
+        for i, food in enumerate(self.container.foods["foods"]):
+            self.foods[food["name"]] = food["count"]
+        context["foods"] = self.foods
+        context["container_name"] = self.container.name
         return context
 
     def form_valid(self, form):
@@ -115,10 +119,27 @@ class EditContainer(LoginRequiredMixin, FormView):
         data = form.data
 
         # TODO: API stuff
+        foods = {"foods": []}
+        foods_id = 0
+        while "food_{}".format(foods_id) in data.keys():
+            foods["foods"].append({"name":data["food_{}".format(foods_id)], "count": data["count_{}".format(foods_id)]})
+            foods_id += 1
+
+        for index, food_item in enumerate(foods["foods"]):
+            food_name = food_item["name"]
+            if len(self.foods.keys())>index and food_name == list(self.foods.keys())[index]:
+                foods["foods"][index]["nutritions"] = self.container.foods["foods"][index]["nutritions"]
+            else:
+                res = requests.get("https://api.nal.usda.gov/fdc/v1/foods/search?api_key=DEMO_KEY&query={}".format(food_name)).json()
+                if res["totalHits"]:
+                    res["foods"] = res["foods"][0]
+                    foods["foods"][index]["nutritions"] = res
+                else:
+                    foods["foods"][index]["nutritions"] = {}
 
         #TODO: make foods list to json and
         self.container.name = data["name"]
-        self.container.foods = {data["food_name"]: data["count"]}
+        self.container.foods = foods
         self.container.memo = data["memo"]
         self.container.save()
         self.containerUUID = self.container.id
