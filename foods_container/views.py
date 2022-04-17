@@ -10,6 +10,7 @@ from customer.models import Customer
 from foods_container.forms import ContainerForm
 
 from foods_container.models import Container
+import requests
 
 from io import BytesIO
 import qrcode, base64
@@ -63,14 +64,25 @@ class CreateContainer(LoginRequiredMixin, FormView):
     def form_valid(self, form):
         data = form.data
 
+        foods = {"foods": []}
+        foods_id = 0
+        while "food_{}".format(foods_id) in data.keys():
+            foods["foods"].append({"name":data["food_{}".format(foods_id)], "count": data["count_{}".format(foods_id)]})
+            foods_id += 1
+
         # TODO: API stuff
+        for index, food_item in enumerate(foods["foods"]):
+            food_name = food_item["name"]
+            res = requests.get("https://api.nal.usda.gov/fdc/v1/foods/search?api_key=DEMO_KEY&query={}".format(food_name)).json()
+            res["foods"] = res["foods"][0] 
+            foods["foods"][index]["nutritions"] = res
 
         #TODO: make foods list to json and
         newContainer = Container.objects.create(
             user_id = Customer.objects.get(id=self.request.user.id),
             name = data["name"],
-            memo = data["memo"],
-            foods = {data["food_name"]: data["count"]}
+            foods = foods,
+            memo = data["memo"]
         )
         self.containerUUID = newContainer.id
         return super().form_valid(form)

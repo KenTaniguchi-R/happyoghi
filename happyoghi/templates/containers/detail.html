@@ -7,7 +7,16 @@
 
 <p>{{ object.memo }}</p>
 
-{{object.foods}}
+<div>
+    {% for food in object.foods.foods %}
+        <div>{{food.name}}: {{food.count}}</div>
+        <div>
+            {% for n in food.nutritions.foods.foodNutrients %}
+                <div>{{n.nutrientName}}: {{n.value}}</div>
+            {% endfor %}
+        </div>
+    {% endfor %}
+</div>
 <img src="data:image/png;base64,{{ qrcode }}" class="qr-code-img" alt="QRcode">
 
 {% if user.is_authenticated %}

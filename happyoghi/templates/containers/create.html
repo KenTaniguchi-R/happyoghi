@@ -2,22 +2,38 @@
 <h1>Create new container</h1>
 
 <form action="" method="POST">
-    {% csrf_token %}
+    <div id="innerForm">
+        {% csrf_token %}
 
-    {{form.name.label}}
-    {{form.name}}
+        {{form.name.label}}
+        {{form.name}}
 
-    {{form.memo.label}}
-    {{form.memo}}
+        {{form.memo.label}}
+        {{form.memo}}
 
-    <input name="hi" type="text"/>
+        <div>
+            <label>food_0:<input name="food_0" type="text"/></label>
 
-    {{form.food_name.label}}
-    {{form.food_name}}
+            <label>count_0:<input name="count_0" type="number" /></label>
+        </div>
 
-    {{form.count.label}}
-    {{form.count}}
+    </div>
 
     <button type="submit">Register</button>
 </form>
+<button id="addMoreItem" type="button" >Add Field</button>
+
+<script>
+    let formNum = 1;
+    let addItem = document.getElementById("addMoreItem");
+    addItem.addEventListener("click", () => {
+        let innerForm = document.getElementById("innerForm");
+        let str = `<div>
+        <label>food_${formNum}:<input name="food_${formNum}" type="text"/></label>
+        <label>count_${formNum}:<input name="count_${formNum}" type="number" /></label></div>
+        `
+        innerForm.insertAdjacentHTML('beforeend', str);
+        formNum += 1;
+    })
+</script>
 
