@@ -6,7 +6,11 @@
 
 <ul>
 {% for container in object_list %}
-    <li><a href="{% url 'detail' container.id %}">{{ container.name }}</a></li>
+    <li>{{ container.name }}
+        <a href="{% url 'detail' container.id %}"><button>View Detail</button></a>
+        <a href="{% url 'edit' container.id %}"><button>Edit</button></a>
+        <a href="{% url 'delete' container.id %}"><button>Delete</button></a>
+    </li>
 {% empty %}
     <li>No articles yet.</li>
 {% endfor %}

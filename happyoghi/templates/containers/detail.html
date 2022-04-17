@@ -1,3 +1,10 @@
+<a href="{% url 'home' %}"><button>Back to home</button></a>
+
 <h1>{{ object.name }}</h1>
 
+<p>{{ object.memo }}</p>
+
 {{object.foods}}
+<img src="data:image/png;base64,{{ qrcode }}" class="qr-code-img" alt="QRcode">
+
+<a href="{% url 'edit' container.id %}"><button>Edit</button></a>
