@@ -42,7 +42,7 @@ crossorigin="anonymous"
 </div>
 
 <script>
-    let formNum = {{foods|length}};
+    let formNum = {{foods|length}}+1;
     let addItem = document.getElementById("addMoreItem");
     addItem.addEventListener("click", () => {
         let innerForm = document.getElementById("innerForm");
