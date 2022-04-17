@@ -11,6 +11,11 @@ class Login(LoginView):
     form_class = LoginForm
     template_name = 'user_auth/login.html'
 
+    def get(self, request, *args, **kwargs):
+        if self.request.user.is_authenticated:
+            return redirect(reverse_lazy('home'))
+        return super().get(request, *args, **kwargs)
+
 class SignUp(CreateView):
     template_name = "user_auth/signup.html"
     form_class = SignUpForm

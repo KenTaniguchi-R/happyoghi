@@ -1,39 +1,57 @@
+
+
+
+<link
+rel="stylesheet"
+href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+crossorigin="anonymous"
+/>
+
+{% load widget_tweaks %}
 <a href="{% url 'home' %}"><button>Back to home</button></a>
-<h1>Create new container</h1>
+<h1>Create new container </h1>
 
 <form action="" method="POST">
+    {% csrf_token %}
     <div id="innerForm">
-        {% csrf_token %}
-
-        {{form.name.label}}
-        {{form.name}}
-
-        {{form.memo.label}}
-        {{form.memo}}
-
-        <div>
-            <label>food_0:<input name="food_0" type="text"/></label>
-
-            <label>count_0:<input name="count_0" type="number" /></label>
+        <div class="form-group">
+            {{form.name.label}}
+            {% render_field form.name class+="form-control" placeholder=form.name.label %}
+        </div>
+        <div class="form-group">
+            {{form.memo.label}}
+            {% render_field form.memo class+="form-control" placeholder=form.memo.label %}
         </div>
 
+        <div class="row">
+            <div class="col">
+              <input class="form-control" name="food_{{forloop.counter0}}" type="text" placeholder="name"/>
+            </div>
+            <div class="col">
+              <input class="form-control" name="count_{{forloop.counter0}}" type="number" placeholder="count"/>
+            </div>
+          </div>
     </div>
+    <button class="btn btn-primary" id="addMoreItem" type="button" >Add Field</button>
+    <button class="btn btn-primary" type="submit">Confirm</button>
+  </form>
 
-    <button type="submit">Register</button>
-</form>
-<button id="addMoreItem" type="button" >Add Field</button>
 
 <script>
-    let formNum = 1;
+    let formNum = {{foods|length}};
     let addItem = document.getElementById("addMoreItem");
     addItem.addEventListener("click", () => {
         let innerForm = document.getElementById("innerForm");
-        let str = `<div>
-        <label>food_${formNum}:<input name="food_${formNum}" type="text"/></label>
-        <label>count_${formNum}:<input name="count_${formNum}" type="number" /></label></div>
-        `
+        let str = `<div class="row">
+            <div class="col">
+              <input class="form-control" name="food_${formNum}" type="text" placeholder="name"/>
+            </div>
+            <div class="col">
+              <input class="form-control" name="count_${formNum}" type="number" placeholder="count"/>
+            </div>
+          </div> `
         innerForm.insertAdjacentHTML('beforeend', str);
         formNum += 1;
     })
 </script>
-
