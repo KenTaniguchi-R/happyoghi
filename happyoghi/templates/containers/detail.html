@@ -1,4 +1,7 @@
+
+{% if user.is_authenticated %}
 <a href="{% url 'home' %}"><button>Back to home</button></a>
+{% endif %}
 
 <h1>{{ object.name }}</h1>
 
@@ -7,4 +10,6 @@
 {{object.foods}}
 <img src="data:image/png;base64,{{ qrcode }}" class="qr-code-img" alt="QRcode">
 
+{% if user.is_authenticated %}
 <a href="{% url 'edit' container.id %}"><button>Edit</button></a>
+{% endif %}

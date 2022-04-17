@@ -1,5 +1,6 @@
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
+from django.db.models import Q
 from django.views.generic.edit import FormView
 from django.views.generic.base import TemplateView
 from django.views.generic.list import ListView
@@ -25,7 +26,11 @@ class Home(LoginRequiredMixin, ListView):
     template_name = "containers/home.html"
 
     def get_queryset(self):
-
+        q_word = self.request.GET.get('query')
+        if q_word:
+            return Container.objects.filter(
+                Q(foods__icontains=q_word) | Q(memo__icontains=q_word),
+                user_id=self.request.user)
         return Container.objects.filter(user_id=self.request.user)
 
     def get(self, request, *args, **kwargs):

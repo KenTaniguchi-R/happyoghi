@@ -2,6 +2,11 @@
 
 <a href="{% url 'create' %}"><button>Create New</button></a>
 
+<form action="" method="get">
+    <input name="query" value="{{ request.GET.query }}" type="text">
+    <button type="submit">Search</button>
+</form>
+
 <h1>Containers</h1>
 
 <ul>
@@ -12,7 +17,7 @@
         <a href="{% url 'delete' container.id %}"><button>Delete</button></a>
     </li>
 {% empty %}
-    <li>No articles yet.</li>
+    <li>No Containers yet.</li>
 {% endfor %}
 </ul>
 
