@@ -35,7 +35,10 @@
     </div>
 
     <div class="m-2">
-        <img src="data:image/png;base64,{{ qrcode }}" class="qr-code-img" style="max-height: 50%; height: 200px;" alt="QRcode">
+        <div class="m-2" id="qr-code-img-div">
+            <img src="data:image/png;base64,{{ qrcode }}" class="qr-code-img" style="max-height: 50%; height: 200px;" alt="QRcode">
+        </div>
+        <button type="button" class="btn btn-primary" onclick="printDivElementById('qr-code-img-div')" >Print QR code!</button>
     </div>
 
 </div>
@@ -55,6 +58,17 @@
             infoDiv.hidden = !infoDiv.hidden;
         });
     })
+
+    function printDivElementById(divName) {
+        var printContents = document.getElementById(divName).innerHTML;
+        var originalContents = document.body.innerHTML;
+   
+        document.body.innerHTML = printContents;
+   
+        window.print();
+   
+        document.body.innerHTML = originalContents;
+   }
 </script>
 </body>
 </html>
