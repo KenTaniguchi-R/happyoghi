@@ -4,10 +4,10 @@
     integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
     crossorigin="anonymous"
   />
-
+  <a href="{% url 'logout' %}"><button  class="btn btn-outline-success my-2 my-sm-0">Logout</button></a>
 <h1>hi, {{ user.get_username }}</h1>
 
-<a href="{% url 'create' %}"><button>Create New</button></a>
+<a href="{% url 'create' %}"><button  class="btn btn-outline-success my-2 my-sm-0">Create New</button></a>
 
 <nav class="navbar navbar-light bg-light">
     <form class="form-inline" action="" method="get">
@@ -54,5 +54,3 @@
     {% endfor %}
     </tbody>
   </table>
-
-<a href="{% url 'logout' %}">Logout</a>

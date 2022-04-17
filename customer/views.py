@@ -3,8 +3,13 @@ from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
 from django.contrib.auth.views import LoginView, LogoutView
 from django.views.generic.edit import CreateView
+from django.views.generic.base import TemplateView
 
 from customer.forms import LoginForm, SignUpForm
+
+
+class LP(TemplateView):
+    template_name= 'user_auth/LP.html'
 
 
 class Login(LoginView):
