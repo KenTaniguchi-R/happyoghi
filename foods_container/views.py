@@ -1,5 +1,7 @@
+from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.views.generic.edit import FormView
+from django.views.generic.base import TemplateView
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -104,3 +106,9 @@ class EditContainer(LoginRequiredMixin, FormView):
         self.container.save()
         self.containerUUID = self.container.id
         return super().form_valid(form)
+
+class DeleteContainer(LoginRequiredMixin, TemplateView):
+
+    def get(self, request, *args, **kwargs):
+        Container.objects.get(id=self.kwargs.get("id")).delete()
+        return redirect(reverse_lazy('home'))
