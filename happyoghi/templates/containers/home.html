@@ -4,11 +4,11 @@
     integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
     crossorigin="anonymous"
   />
+  <div class="container py-5 h-100">
   <a href="{% url 'logout' %}"><button  class="btn btn-outline-success my-2 my-sm-0">Logout</button></a>
-<h1>hi, {{ user.get_username }}</h1>
 
-<a href="{% url 'create' %}"><button  class="btn btn-outline-success my-2 my-sm-0">Create New</button></a>
 
+  <h1>hi, {{ user.get_username }}</h1>
 <nav class="navbar navbar-light bg-light">
     <form class="form-inline" action="" method="get">
       <input name="query" class="form-control mr-sm-2" placeholder="Search" aria-label="Search" value="{{ request.GET.query }}" type="text">
@@ -17,6 +17,7 @@
   </nav>
 <h1>Containers</h1>
 
+<a href="{% url 'create' %}"><button  class="btn btn-outline-success my-2 my-sm-0">Create New</button></a>
 <table class="table align-middle mb-0 bg-white">
     <thead class="bg-light">
       <tr>
@@ -54,3 +55,4 @@
     {% endfor %}
     </tbody>
   </table>
+</div>

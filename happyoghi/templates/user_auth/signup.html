@@ -12,25 +12,19 @@
           <div class="card bg-dark text-white" style="border-radius: 1rem">
             <div class="card-body p-5 text-center">
               <div class="mb-md-5 mt-md-4 pb-5">
-                <form action="" method="POST">
-                  {% csrf_token %} {{ form.non_field_errors }}
-                  {% for field in form %}
-                  <div class="form-outline form-white mb-4">
-                    <label class="form-label">{{field.name}} {{ field }}</label>
-                    {{ field.errors }}
-                    <br />
-                  </div>
-                  {% endfor %}
-                  <button
-                    type="submit"
-                    class="btn btn-outline-light btn-lg px-5"
-                  >
-                  Register
-                  </button>
-                  <input type="hidden" name="next" value="{{ next }}" />
+                <form action="" method="POST" >
+                  {% csrf_token %}
+                  <label>User Id {{ form.username }} {{ form.username.errors }}</label>
+
+                  <label>Password {{ form.password1 }} {{ form.password1.errors }}</label>
+
+                  <label>Password(Again) {{ form.password2 }} {{ form.password2.errors }}</label>
+
+                  <button type="submit" class="btn btn-outline-light btn-lg px-5">Register</button>
                 </form>
               </div>
-              <p>Do you already have an account?</p>
+
+              <p>do you already have an account?</p>
               <a href="{% url 'login' %}">Login</a>
             </div>
           </div>

@@ -7,7 +7,8 @@ crossorigin="anonymous"
 />
 
 {% load widget_tweaks %}
-<a href="{% url 'home' %}"><button>Back to home</button></a>
+<div class="container py-5 h-100">
+<a href="{% url 'home' %}"><button class="btn btn-primary">Back to home</button></a>
 <h1>Edit container: {{ container_name }} </h1>
 
 <form action="" method="POST">
@@ -21,8 +22,9 @@ crossorigin="anonymous"
             {{form.memo.label}}
             {% render_field form.memo class+="form-control" placeholder=form.memo.label %}
         </div>
-
+        Contents
         {% for name, count in foods.items %}
+        <div class="form-group">
         <div class="row">
             <div class="col">
               <input class="form-control" name="food_{{forloop.counter0}}" type="text" value="{{name}}" placeholder="name"/>
@@ -31,27 +33,28 @@ crossorigin="anonymous"
               <input class="form-control" name="count_{{forloop.counter0}}" type="number" value="{{count}}" placeholder="count"/>
             </div>
           </div>
+        </div>
 
         {% endfor %}
     </div>
     <button class="btn btn-primary" id="addMoreItem" type="button" >Add Field</button>
     <button class="btn btn-primary" type="submit">Confirm</button>
   </form>
-
+</div>
 
 <script>
     let formNum = {{foods|length}};
     let addItem = document.getElementById("addMoreItem");
     addItem.addEventListener("click", () => {
         let innerForm = document.getElementById("innerForm");
-        let str = `<div class="row">
+        let str = `<div class="form-group"><div class="row">
             <div class="col">
               <input class="form-control" name="food_${formNum}" type="text" placeholder="name"/>
             </div>
             <div class="col">
               <input class="form-control" name="count_${formNum}" type="number" placeholder="count"/>
             </div>
-          </div> `
+          </div></div> `
         innerForm.insertAdjacentHTML('beforeend', str);
         formNum += 1;
     })
