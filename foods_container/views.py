@@ -48,7 +48,7 @@ class ContainerDetail(DetailView):
 
     def get_context_data(self, **kwargs):
         context =  super().get_context_data(**kwargs)
-        url = f"http://127.0.0.1:8000/detail/{self.kwargs.get('id')}"
+        url = f"https://happyoghi.herokuapp.com/detail/{self.kwargs.get('id')}"
         qrcode = get_base_encoding(url)
         context["qrcode"] = qrcode
         return context
