@@ -1,19 +1,55 @@
-<a href="{% url 'home' %}"><button>Back to home</button></a>
+<html>
+    <body class="bg-info" style="display:flex; flex-direction:column; align-items: center; justify-content: center;">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+<a href="{% url 'home' %}"><button class="btn btn-secondary m-2">Back to home</button></a>
 
-<h1>{{ object.name }}</h1>
+<h1>Container Name: {{ object.name }}</h1>
 
-<p>{{ object.memo }}</p>
+<p>Note: {{ object.memo }}</p>
+
+<div style="display:flex;">
+
+    <div class="m-2">
+        <ul>
+        {% for food in object.foods.foods %}
+            <div>
+                <li class="list-group-item m-1">
+                    <span class="font-weight-bold">{{food.name}}</span>: {{food.count}}
+                    <div class="nutrients_info_wrapper">
+                        <button name="showNutrients" class="btn btn-primary m-2">Show nutrients</button>
+                        <div class="nutrients_info" hidden>
+                            <ul>
+                        {% for n in food.nutritions.foods.foodNutrients %}
+                            <li class="list-group-item"><span>{{n.nutrientName}}: {{n.value}} <span class="text-muted" style="text-transform: lowercase;">{{n.unitName}}</span></span></li>
+                        {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                </li>
+            </div>
+        {% endfor %}
+        </ul>
+    </div>
+
+    <div class="m-2">
+        <img src="data:image/png;base64,{{ qrcode }}" class="qr-code-img" style="max-height: 50%; height: 200px;" alt="QRcode">
+    </div>
+
+</div>
+
 
 <div>
-    {% for food in object.foods.foods %}
-        <div>{{food.name}}: {{food.count}}</div>
-        <div>
-            {% for n in food.nutritions.foods.foodNutrients %}
-                <div>{{n.nutrientName}}: {{n.value}}</div>
-            {% endfor %}
-        </div>
-    {% endfor %}
+    <a href="{% url 'edit' container.id %}"><button class="btn btn-secondary">Edit</button></a>
 </div>
-<img src="data:image/png;base64,{{ qrcode }}" class="qr-code-img" alt="QRcode">
 
-<a href="{% url 'edit' container.id %}"><button>Edit</button></a>
+<script>
+    let buttonShowNutrients = document.getElementsByName("showNutrients");
+    buttonShowNutrients.forEach((button) => {
+        button.addEventListener("click", () => {
+            let infoDiv = button.parentElement.querySelector(".nutrients_info");
+            infoDiv.hidden = !infoDiv.hidden;
+        });
+    })
+</script>
+</body>
+</html>
