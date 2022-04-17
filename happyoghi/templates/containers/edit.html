@@ -1,5 +1,5 @@
 <a href="{% url 'home' %}"><button>Back to home</button></a>
-<h1>Create new container</h1>
+<h1>Edit container: {{ container.name }} </h1>
 
 <form action="" method="POST">
     {% csrf_token %}
@@ -16,6 +16,6 @@
     {{form.count.label}}
     {{form.count}}
 
-    <button type="submit">Register</button>
+    <button type="submit">Confirm</button>
 </form>
 
