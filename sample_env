@@ -4,3 +4,5 @@ Database=<database name>
 User=<database user name>
 Port=<database port nubmer>
 Password=<database password>
+
+Secret_key=<Django's secret key>
