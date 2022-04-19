@@ -1,6 +1,6 @@
 # Hackathon Project 2022/04
 
-## Contributers
+## Contributors
 - Ken Taniguchi
 - Kyohei Yamaguchi
 
